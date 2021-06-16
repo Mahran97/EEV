@@ -1,0 +1,177 @@
+import pandapower as pp
+#import pandas as pd
+import pandapower.plotting as plt
+import pandapower.networks as nw
+import warnings
+import igraph
+from pandapower.plotting import simple_plot, simple_plotly, pf_res_plotly
+
+net = pp.create_empty_network(name='EEV')
+
+# Buses:
+pp.create_bus(net, name = "110 kV bar", vn_kv = 110, type = 'b')
+pp.create_bus(net, name = "bus 1", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 2", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 3", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 4", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 5", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 6", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 7", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 8", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 9", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 10", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 11", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 12", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 13", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 14", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 15", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 16", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 17", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 18", vn_kv = 0.4, type = 'b')
+pp.create_bus(net, name = "bus 19", vn_kv = 220, type = 'b')
+pp.create_bus(net, name = "bus 20", vn_kv = 110, type = 'b')
+pp.create_bus(net, name = "bus 21", vn_kv = 20, type = 'b')
+
+# External Grid:
+ext = pp.create_ext_grid(net, 19, vm_pu = 1.2, in_service = True)
+
+
+# Linien:
+pp.create_line(net, name = "line 0", from_bus = 1, to_bus = 2, length_km = 1, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 1", from_bus = 2, to_bus = 3, length_km = 1, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 2", from_bus = 3, to_bus = 4, length_km = 1, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 3", from_bus = 4, to_bus = 5, length_km = 1, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 4", from_bus = 5, to_bus = 6, length_km = 1, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 5", from_bus = 6, to_bus = 7, length_km = 1, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 6", from_bus = 7, to_bus = 8, length_km = 1.5, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 7", from_bus = 8, to_bus = 9, length_km = 2, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 8", from_bus = 9, to_bus = 10, length_km = 2.5, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 9", from_bus = 10, to_bus = 11, length_km = 0.5, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 10", from_bus = 11, to_bus = 12, length_km = 1.9, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 11", from_bus = 12, to_bus = 1, length_km = 2, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 12", from_bus = 4, to_bus = 13, length_km = 5, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 13", from_bus = 6, to_bus = 14, length_km = 0.5, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 14", from_bus = 13, to_bus = 14, length_km = 1.9, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 15", from_bus = 8, to_bus = 16, length_km = 5, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 16", from_bus = 15, to_bus = 16, length_km = 0.5, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 17", from_bus = 10, to_bus = 15, length_km = 1.9, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 18", from_bus = 15, to_bus = 18, length_km = 0.5, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 19", from_bus = 12, to_bus = 18, length_km = 1.9, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 20", from_bus = 13, to_bus = 17, length_km = 5, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 21", from_bus = 2, to_bus = 17, length_km = 0.5, std_type = "48-AL1/8-ST1A 0.4")
+pp.create_line(net, name = "line 22", from_bus = 19, to_bus = 0, length_km = 3, std_type = "490-AL1/64-ST1A 220.0")
+pp.create_line(net, name = "line 23", from_bus = 0, to_bus = 20, length_km = 3, std_type = "149-AL1/24-ST1A 110.0")
+pp.create_line(net, name = "line 24", from_bus = 0, to_bus = 21, length_km = 3, std_type = "149-AL1/24-ST1A 110.0")
+pp.create_line(net, name = "line 25", from_bus = 21, to_bus = 1, length_km = 3, std_type = "149-AL1/24-ST1A 110.0")
+
+
+
+# Trafos:
+pp.create_transformer_from_parameters(net, hv_bus=19, lv_bus=0, i0_percent=0.0038, pfe_kw=20.6,
+        vkr_percent=0.0322, sn_mva=80, vn_lv_kv=110.0, vn_hv_kv=220.0, vk_percent=27.8)
+
+pp.create_transformer_from_parameters(net, hv_bus=0, lv_bus=21, i0_percent=0.038, pfe_kw=11.6,
+        vkr_percent=0.322, sn_mva=40, vn_lv_kv=20.0, vn_hv_kv=110.0, vk_percent=17.8)
+
+pp.create_transformer_from_parameters(net, hv_bus=21, lv_bus=1, i0_percent=1.4, pfe_kw=3.563,
+        vkr_percent=1.7815, sn_mva=0.2, vn_lv_kv=0.4, vn_hv_kv=20.0, vk_percent=4.4)
+
+# pp.create_transformer_from_parameters(net, hv_bus=21, lv_bus=15, i0_percent=0.038, pfe_kw=11.6,
+#         vkr_percent=0.322, sn_mva=40, vn_lv_kv=22.0, vn_hv_kv=110.0, vk_percent=17.8)
+
+# Lasten:
+pp.create_load(net, 2, p_mw = 0.001, q_mvar = 0.0002, name = "load 0")
+pp.create_load(net, 3, p_mw = 0.003, q_mvar = 0.0001, name = "load 1")
+pp.create_load(net, 4, p_mw = 0.002, q_mvar = 0.00015, name = "load 2")
+pp.create_load(net, 5, p_mw = 0.002, q_mvar = 0.0001, name = "load 3")
+pp.create_load(net, 6, p_mw = 0.0015, q_mvar = 0.0001, name = "load 4")
+pp.create_load(net, 7, p_mw = 0.0019, q_mvar = 0.0001, name = "load 5")
+pp.create_load(net, 8, p_mw = 0.0018, q_mvar = 0.0001, name = "load 6")
+pp.create_load(net, 9, p_mw = 0.0025, q_mvar = 0.0001, name = "load 7")
+pp.create_load(net, 10, p_mw = 0.0023, q_mvar = 0.0001, name = "load 8")
+pp.create_load(net, 11, p_mw = 0.0024, q_mvar = 0.0001, name = "load 9")
+pp.create_load(net, 12, p_mw = 0.0031, q_mvar = 0.00015, name = "load 10")
+pp.create_load(net, 13, p_mw = 0.0025, q_mvar = 0.0001, name = "load 11")
+pp.create_load(net, 14, p_mw = 0.0027, q_mvar = 0.0001, name = "load 12")
+pp.create_load(net, 15, p_mw = 0.0019, q_mvar = 0.0001, name = "load 13")
+pp.create_load(net, 16, p_mw = 0.0015, q_mvar = 0.001, name = "load 14")
+pp.create_load(net, 17, p_mw = 0.0008, q_mvar = 0.0001, name = "load 15")
+pp.create_load(net, 18, p_mw = 0.001, q_mvar = 0.0001, name = "load 16")
+pp.create_load(net, 20, p_mw = 20, q_mvar = 0.4, name = "load 17")
+
+
+# Switch:
+pp.create_switch(net, bus = 1, element = 0, et = 'l', closed = 1)
+pp.create_switch(net, bus = 2, element = 0, et = 'l', closed = 1)
+pp.create_switch(net, bus = 2, element = 1, et = 'l', closed = 1)
+pp.create_switch(net, bus = 3, element = 1, et = 'l', closed = 1)
+pp.create_switch(net, bus = 3, element = 2, et = 'l', closed = 1)
+pp.create_switch(net, bus = 4, element = 2, et = 'l', closed = 0)
+pp.create_switch(net, bus = 4, element = 3, et = 'l', closed = 1)
+pp.create_switch(net, bus = 5, element = 3, et = 'l', closed = 1)
+pp.create_switch(net, bus = 5, element = 4, et = 'l', closed = 1)
+pp.create_switch(net, bus = 6, element = 4, et = 'l', closed = 0)
+pp.create_switch(net, bus = 6, element = 5, et = 'l', closed = 1)
+pp.create_switch(net, bus = 7, element = 5, et = 'l', closed = 0)
+pp.create_switch(net, bus = 7, element = 6, et = 'l', closed = 1)
+pp.create_switch(net, bus = 8, element = 6, et = 'l', closed = 1)
+pp.create_switch(net, bus = 8, element = 7, et = 'l', closed = 1)
+pp.create_switch(net, bus = 9, element = 7, et = 'l', closed = 1)
+pp.create_switch(net, bus = 9, element = 8, et = 'l', closed = 1)
+pp.create_switch(net, bus = 10, element = 8, et = 'l', closed = 1)
+pp.create_switch(net, bus = 10, element = 9, et = 'l', closed = 1)
+pp.create_switch(net, bus = 11, element = 9, et = 'l', closed = 1)
+pp.create_switch(net, bus = 11, element = 10, et = 'l', closed = 1)
+pp.create_switch(net, bus = 12, element = 10, et = 'l', closed = 1)
+pp.create_switch(net, bus = 12, element = 11, et = 'l', closed = 1)
+pp.create_switch(net, bus = 1, element = 11, et = 'l', closed = 0)
+pp.create_switch(net, bus = 4, element = 12, et = 'l', closed = 1)
+pp.create_switch(net, bus = 8, element = 15, et = 'l', closed = 0)
+pp.create_switch(net, bus = 2, element = 21, et = 'l', closed = 1)
+pp.create_switch(net, bus = 17, element = 20, et = 'l', closed = 1)
+pp.create_switch(net, bus = 17, element = 21, et = 'l', closed = 1)
+pp.create_switch(net, bus = 13, element = 12, et = 'l', closed = 1)
+pp.create_switch(net, bus = 13, element = 14, et = 'l', closed = 1)
+pp.create_switch(net, bus = 13, element = 20, et = 'l', closed = 1)
+pp.create_switch(net, bus = 14, element = 13, et = 'l', closed = 1)
+pp.create_switch(net, bus = 14, element = 14, et = 'l', closed = 1)
+pp.create_switch(net, bus = 6, element = 13, et = 'l', closed = 1)
+pp.create_switch(net, bus = 16, element = 15, et = 'l', closed = 1)
+pp.create_switch(net, bus = 16, element = 16, et = 'l', closed = 1)
+pp.create_switch(net, bus = 15, element = 17, et = 'l', closed = 1)
+pp.create_switch(net, bus = 10, element = 17, et = 'l', closed = 1)
+pp.create_switch(net, bus = 15, element = 16, et = 'l', closed = 1)
+pp.create_switch(net, bus = 15, element = 18, et = 'l', closed = 0)
+pp.create_switch(net, bus = 18, element = 19, et = 'l', closed = 1)
+pp.create_switch(net, bus = 18, element = 18, et = 'l', closed = 1)
+pp.create_switch(net, bus = 12, element = 19, et = 'l', closed = 1)
+pp.create_switch(net, bus = 0, element = 23, et = 'l', closed = 0)
+
+
+pp.create_storage(net, bus = 1, p_mw = 3.6, max_e_mwh = 6.4, sn_mva = 5.6, soc_percent = 41, 
+                min_e_mwh = 0, name = 'BSK', index=None, scaling=1.0, type=None, in_service=True, 
+                max_p_mw = 5.6, min_p_mw = 0, controllable = True)
+
+# Creat Generators:
+g1 = pp.create_gen(net, bus = 20, p_mw = 20, min_p_mw = 0, max_p_mw = 30, controllable = True, slack = True)
+g2 = pp.create_gen(net, bus = 12, p_mw = 3, min_p_mw = 0, max_p_mw = 5, controllable = True, slack = True)
+g3 = pp.create_gen(net, bus = 11, p_mw = 2, min_p_mw = 0, max_p_mw = 5, controllable = True, slack = True)
+g4 = pp.create_gen(net, bus = 10, p_mw = 2, min_p_mw = 0, max_p_mw = 5, controllable = True, slack = True)
+g5 = pp.create_gen(net, bus = 9, p_mw = 2, min_p_mw = 0, max_p_mw = 5, controllable = True, slack = True)
+
+# Kostenvergleich:
+pp.create_poly_cost(net, element = g1, et = 'gen', cp1_eur_per_mw = 20)
+pp.create_poly_cost(net, element = g2, et = 'gen', cp1_eur_per_mw = 25)
+pp.create_poly_cost(net, element = g3, et = 'gen', cp1_eur_per_mw = 19)
+pp.create_poly_cost(net, element = g4, et = 'gen', cp1_eur_per_mw = 20)
+pp.create_poly_cost(net, element = g5, et = 'gen', cp1_eur_per_mw = 15)
+
+
+pp.runpp(net)
+#print(net)
+#print(net.bus)
+print(net.res_bus)
+print(net.res_gen)
+#print(net.load)
+#plt.simple_plot(net, plot_line_switches=True)
+pf_res_plotly(net)
